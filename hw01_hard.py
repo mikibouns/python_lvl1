@@ -14,11 +14,9 @@ __author__ = 'Матиек Игорь Николаевич'
 
 # Подсказка: это значение точно есть ;)
 
-a = bin(999999)
-#for a in range(999999, 10000000):
-if (a == a*2) and (a == a**2) and (a == a > 999999):
-    print(a)
-    #break
+a = float('inf')# inf - бесконечность
+
+if (a == a*2) and (a == a**2) and (a > 999999):
+    print("Cool!!!")
 else:
     print("You are looser!")
-
