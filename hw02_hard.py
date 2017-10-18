@@ -28,12 +28,12 @@ __author__ = 'Матиек Игорь Николаевич'
 # date = '-2.10.3001'
 
 
-incoming_date = input('Enter date: ')
-day, month, year = incoming_date.split('.')
-if (30 >= int(day) > 0) and (12 >=int(month) > 0) and (9999 >= int(year) > 0) and (len(incoming_date) == 10):
-    print('Date is correct!')
-else:
-    print('Date is not correct!')
+# incoming_date = input('Enter date: ')
+# day, month, year = incoming_date.split('.')
+# if (30 >= int(day) > 0) and (12 >=int(month) > 0) and (9999 >= int(year) > 0) and (len(incoming_date) == 10):
+#     print('Date is correct!')
+# else:
+#     print('Date is not correct!')
 
 # Задание-3: "Перевёрнутая башня" (Задача олимпиадного уровня)
 #
@@ -65,7 +65,7 @@ else:
 # Вход: 11
 # Выход: 5 3
 
-room = 1000000000
+room = 10000000
 countString = 0
 countPosition = 1
 count = 1
@@ -81,3 +81,27 @@ for i in range(1, 2000000000):
                 break
 
 #перебор конечно не самое хорошое решение)))
+import time
+
+
+start_time = time.time()
+room_for_search = 1999999999
+
+block = 1
+first_room = 1
+floor = 1
+
+while room_for_search >= first_room + block ** 2:
+    first_room = first_room + block ** 2
+    floor += block
+    block += 1
+
+floor += ((room_for_search - first_room) // block)#
+room_sequince = int((room_for_search - first_room) % block + 1)
+
+print(floor, room_sequince)
+
+finish_time = time.time()
+
+program_execution_time = finish_time - start_time
+print(program_execution_time)
