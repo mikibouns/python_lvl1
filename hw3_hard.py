@@ -20,4 +20,4 @@ with open('salary.txt', 'w+', encoding='UTF-8') as file:
     file.seek(0)
     for i in file:
         key, value = i.rstrip().split('-')
-        print('{} -> {}'.format(key.upper(), ((int(value)/100)*13)))
+        print('{} -> {}'.format(key.upper(), ((int(value) / 100) * 13)))
