@@ -52,12 +52,22 @@ for i in range(len(list_number) - 5):
         str_max_sum = '{} {}'.format(i, max_sum)
 print(str_max_sum)
 
-    # Задание-3 (Ферзи):
-    # Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
-    # друг друга. Вам дана расстановка 8 ферзей на доске.
-    # Определите, есть ли среди них пара бьющих друг друга.
-    # Программа получает на вход восемь пар чисел,
-    # каждое число от 1 до 8 — координаты 8 ферзей.
-    # Если ферзи не бьют друг друга, выведите слово NO, иначе выведите YES.
+# Задание-3 (Ферзи):
+# Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
+# друг друга. Вам дана расстановка 8 ферзей на доске.
+# Определите, есть ли среди них пара бьющих друг друга.
+# Программа получает на вход восемь пар чисел,
+# каждое число от 1 до 8 — координаты 8 ферзей.
+# Если ферзи не бьют друг друга, выведите слово NO, иначе выведите YES.
 
-print('hello')
+import random
+
+queen_position_list = [[random.randrange(1, 9) for j in range(2)] for i in range(8)]
+print(queen_position_list)
+for i in range(8):
+    for j in range(8):
+        if i != j:
+            if queen_position_list[i][0] == queen_position_list[j][0] or queen_position_list[i][1] == queen_position_list[j][1]:
+                print('Queeen {}:{}, queen {}:{} -> Yes'.format(i, queen_position_list[i], j, queen_position_list[j]))
+            else:
+                print('Queeen {}:{}, queen {}:{} -> No'.format(i, queen_position_list[i], j, queen_position_list[j]))
