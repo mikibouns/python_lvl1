@@ -18,6 +18,7 @@ __author__ = 'Матиек Игорь Николаевич'
 
 # Данный скрипт можно запускать с параметрами:
 # python with_args.py param1 param2 param3
+
 import os
 import sys
 import shutil
@@ -28,6 +29,10 @@ def print_help():
     print("help - получение справки")
     print("mkdir <dir_name> - создание директории")
     print("ping - тестовый ключ")
+    print("cp <file_name> - создать копию указанного файла")
+    print('rm <file_name> - удалить указанный файл')
+    print('cd <full_path or relative_path> - менить текущую директорию на указанную')
+    print('ls - отображает полный путь текущей директории')
 
 
 def make_dir():
@@ -41,19 +46,41 @@ def make_dir():
     except FileExistsError:
         print('директория {} уже существует'.format(dir_name))
 
-
 def ping():
     print("pong")
 
-def cp_file(file_name):
-    shutil.copy(file_name, '{}\copy_{}'.format(os.getcwd(), file_name))
+def cp_file():
+    if dir_name != None:
+        shutil.copy(dir_name, '{}\copy_{}'.format(os.getcwd(), dir_name))
+        print('файл {} создан'.format(dir_name))
+    else:
+        print('Файл {} уже существует'.format(dir_name))
 
+def rm_file():
+    try:
+        os.remove(os.path.join(os.path.abspath(os.path.dirname(__file__)), dir_name))
+        print('Файл {} успешно удален'.format(dir_name))
+    except FileNotFoundError:
+        print('Файл {} не найден'.format(dir_name))
+
+def cd_dir():
+    try:
+        os.chdir(dir_name)
+        print('текущая директория: {}'.format(os.getcwd()))
+    except FileNotFoundError:
+        print('директория {} не найдена'.format(dir_name))
+
+def dir_list():
+    print(os.getcwd())
 
 do = {
     "help": print_help,
     "mkdir": make_dir,
     "ping": ping,
-    "cp": cp_file
+    "cp": cp_file,
+    "rm": rm_file,
+    "cd": cd_dir,
+    "ls": dir_list
 }
 
 try:
@@ -73,3 +100,4 @@ if key:
     else:
         print("Задан неверный ключ")
         print("Укажите ключ help для получения справки")
+
