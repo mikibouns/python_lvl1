@@ -66,7 +66,7 @@ def main():
         ---------------------------------------------
         ''')
 
-        print('Текущая путь: {}'.format(os.getcwd()))
+        print('Текущий путь: {}'.format(os.getcwd()))
         menu_item = input('Введите необходимый пункт: ')
         if menu_item == '1':
             go_to_dir()
