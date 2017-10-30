@@ -14,6 +14,8 @@ __author__ = 'Матиек Игорь Николаевич'
 # Вам надо описать игровой цикл так же через класс.
 # Создайте экземпляры классов, проведите бой. Кто будет атаковать первым оставляю на ваше усмотрение.
 
+import random
+
 class Person:
     def __init__(self, armor, damage, health=100):
         self.armor = armor
@@ -38,15 +40,26 @@ class Enemy(Person):
     pass
 
 class Game:
-    def __int__(self):
-        enemy = Enemy(100, 30, 100)
-        player = Player(100, 25, 100)
-        player.attack(enemy)
+    def __init__(self, player, enemy):
+        self.player = player
+        self.enemy = enemy
 
+    def start_game(self):
+        while True:
+            if self.player.health <= 0:
+                print('enemy win!')
+                break
+            elif self.enemy.health <= 0:
+                print('player win!')
+                break
+            self.player.attack(self.enemy)
+            self.enemy.attack(self.player)
 
+enemy = Enemy(100, 30, 100)
+player = Player(100, 35, 100)
 
-game_1 = Game()
-
+game_1 = Game(enemy, player)
+game_1.start_game()
 
 
 
