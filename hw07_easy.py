@@ -51,32 +51,44 @@ import random
 def card_format(func):
     def wrapper(self):
         if self.__class__.__name__ == 'Player':
-            print('------ Ваша карточка -----')
+            print('------- Ваша карточка -------')
         elif self.__class__.__name__ == 'Computer':
-            print('-- Карточка компьютера ---')
+            print('---- Карточка компьютера ----')
         else:
-            pass
+            print('-----------------------------')
         func(self)
-        print('--------------------------')
+        print('-----------------------------')
+
     return wrapper
+
 
 class Card:
     def __init__(self):
         self.card = []
 
-    def create_card(self):
-        while len(self.card) < 20:
+    def _sort_card(self):
+        temporary_card = []
+        while len(temporary_card) < 20:
             random_card_number = random.randrange(1, 91)
-            if random_card_number in self.card:
+            if random_card_number in temporary_card:
                 continue
-            self.card.append(random_card_number)
-        self.card.sort()
+            temporary_card.append(random_card_number)
+        return sorted(temporary_card)
 
+    def create_card(self):
+        for i in range(0, 20, 5):
+            section_card = self._sort_card()[i: i + 5]
+            while section_card.count(' ') != 5:
+                index_card = random.randrange(0, 5)
+                section_card[index_card: index_card + 1] += [' ']
+            self.card += section_card
 
     @card_format
     def print_card(self):
-        for i in range(0, 20, 5):
-            print(self.card[i: i+5])
+        for i in range(0, 40, 10):
+            for j in self.card[i: i + 10]:
+                print('{:>2}'.format(j), end=' ')
+            print()
 
     def cross_out_number(self, keg_number):
         if keg_number in self.card:
@@ -85,11 +97,14 @@ class Card:
         else:
             return False
 
+
 class Player(Card):
     pass
 
+
 class Computer(Card):
     pass
+
 
 class BagWithKegs:
     def __init__(self):
@@ -99,36 +114,62 @@ class BagWithKegs:
         keg_index = random.randrange(1, len(self.bag_with_kegs))
         return self.bag_with_kegs.pop(keg_index)
 
-def main():
-    bag = BagWithKegs()
-    player = Player()
-    computer = Computer()
-    player.create_card()
-    computer.create_card()
-    while True:
-        keg_number = bag.get_keg()
-        print('Новый боченок: {} (осталось {})'.format(keg_number, len(bag.bag_with_kegs)))
-        player.print_card()
-        computer.print_card()
-        computer.cross_out_number(keg_number)
-        player.cross_out_number(keg_number)
-        if len(bag.bag_with_kegs) <= 1:
-            break
-        # answer = input('Зачеркнуть цифру? (y/n) ')
-        # if answer == 'n':
-        #     continue
-        # elif answer == 'y' and player.cross_out_number(keg_number):
-        #     continue
-        # else:
-        #     print('You loser!')
-        #     break
 
-    if player.card.count('-') > computer.card.count('-'):
-        print('You win!')
-    elif player.card.count('-') > computer.card.count('-'):
-        print('Draw!')
-    else:
-        print('You loser!')
+class Game:
+    def __init__(self, player, computer, bag_with_kegs):
+        self.player = player
+        self.computer = computer
+        self.bab_with_kegs = bag_with_kegs
+
+    @staticmethod
+    def answer():
+        while True:
+            answer = input('Зачеркнуть цифру? (y/n) ')
+            if answer == 'y' or answer == 'n':
+                break
+        return answer
+
+    def start_game(self):
+        self.player.create_card()
+        self.computer.create_card()
+        while True:
+            if self.player.card.count('-') == 20 or self.computer.card.count('-') == 20 or len(self.bab_with_kegs.bag_with_kegs) <= 1:
+                self._finish_game()
+                break
+            keg_number = self.bab_with_kegs.get_keg()
+            print('Новый боченок: {} (осталось {})'.format(keg_number, len(self.bab_with_kegs.bag_with_kegs)))
+            self.player.print_card()
+            self.computer.print_card()
+            self.computer.cross_out_number(keg_number)
+            answer = Game.answer()
+            if answer == 'y':
+                if self.player.cross_out_number(keg_number):
+                    continue
+                else:
+                    print('Ты проиграл! Будь внимательным!')
+                    break
+            else:
+                if keg_number in self.player.card:
+                    print('Ты проиграл! Будь внимательным!')
+                    break
+
+
+    def _finish_game(self):
+        player = self.player.card.count('-')
+        computer = self.computer.card.count('-')
+        if player > computer:
+            print('Ты победил!')
+        elif player == computer:
+            print('Ничья!')
+        else:
+            print('Ты проиграл!')
+
+
+
+def main():
+    game = Game(Player(), Computer(), BagWithKegs())
+    game.start_game()
+
 
 if __name__ == '__main__':
     main()
